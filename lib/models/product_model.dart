@@ -75,21 +75,22 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null ? int.parse(map['id'].toString()) : null,
       title: map['title'] != null ? map['title'] as String : null,
       description:
           map['description'] != null ? map['description'] as String : null,
-      price: map['price'] != null ? map['price'] as int : null,
+      price: map['price'] != null ? int.parse(map['price'].toString()) : null,
       discountPercentage: map['discountPercentage'] != null
-          ? map['discountPercentage'] as double
+          ? double.parse(map['discountPercentage'].toString())
           : null,
-      rating: map['rating'] != null ? map['rating'] as double : null,
-      stock: map['stock'] != null ? map['stock'] as int : null,
+      rating:
+          map['rating'] != null ? double.parse(map['rating'].toString()) : null,
+      stock: map['stock'] != null ? int.parse(map['stock'].toString()) : null,
       brand: map['brand'] != null ? map['brand'] as String : null,
       category: map['category'] != null ? map['category'] as String : null,
       thumbnail: map['thumbnail'] != null ? map['thumbnail'] as String : null,
       images: map['images'] != null
-          ? List<String>.from((map['images'] as List<String>))
+          ? (map['images'] as List<dynamic>).map((e) => e.toString()).toList()
           : null,
     );
   }

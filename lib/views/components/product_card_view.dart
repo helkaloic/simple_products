@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_products/config/theme/theme.dart';
+import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/utils/utils.dart';
 
@@ -9,9 +10,11 @@ class ProductCardView extends StatelessWidget {
   const ProductCardView({
     super.key,
     required this.size,
+    required this.model,
   });
 
   final Size size;
+  final ProductModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class ProductCardView extends StatelessWidget {
               topRight: Radius.circular(10),
             ),
             child: CachedNetworkImage(
-              imageUrl: 'https://i.dummyjson.com/data/products/1/1.jpg',
+              imageUrl: model.thumbnail ?? '',
               fit: BoxFit.cover,
               width: size.width / 2,
               height: 300.h,
@@ -49,7 +52,7 @@ class ProductCardView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'iPhone X pro',
+                        model.title ?? '---',
                         style: AppTheme.mediumText.copyWith(
                           fontSize: 32.sp,
                           color: AppColor.textGrey,
@@ -59,7 +62,7 @@ class ProductCardView extends StatelessWidget {
                       ),
                       addHeightSpace(SMALL_PADDING / 4),
                       Text(
-                        r'$100',
+                        '\$${model.price}',
                         style: AppTheme.mediumText.copyWith(fontSize: 40.sp),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
