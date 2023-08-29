@@ -121,13 +121,15 @@ class _ProductAddViewState extends State<ProductAddView> {
                     vertical: 18,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColor.blue,
+                    color: AppColor.green,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
                     child: Text(
                       'Add',
-                      style: AppTheme.mediumText,
+                      style: AppTheme.mediumText.copyWith(
+                        color: AppColor.deepBlack,
+                      ),
                     ),
                   ),
                 ),

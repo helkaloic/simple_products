@@ -23,8 +23,45 @@ class ProductViewModel extends ChangeNotifier {
 
   List<ProductModel> carts = [];
   List<ProductModel> searchProducts = [];
+  List<ProductModel> checkoutList = [];
   List<ProductModel>? products;
   String? _imageName;
+
+  checkoutProduct() {
+    navigationService.showLoader();
+
+    for (ProductModel product in checkoutList) {
+      if (carts.contains(product) && products!.contains(product)) {
+        carts.remove(product);
+      }
+    }
+    checkoutList.clear();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      navigationService.back();
+      navigationService.showMessage('Completed your order!');
+    });
+
+    notifyListeners();
+  }
+
+  int get calculatedPrice {
+    int price = 0;
+    for (var element in checkoutList) {
+      price += element.price ?? 0;
+    }
+    return price;
+  }
+
+  addOrRemoveCheckoutList(ProductModel product) {
+    if (checkoutList.contains(product)) {
+      checkoutList.remove(product);
+    } else {
+      checkoutList.add(product);
+    }
+
+    notifyListeners();
+  }
 
   searchProduct(String text) {
     searchProducts = products!
@@ -51,6 +88,7 @@ class ProductViewModel extends ChangeNotifier {
 
   removeAllCart() {
     carts.clear();
+    checkoutList.clear();
     navigationService.showMessage('Removed all product in cart!');
     notifyListeners();
   }
@@ -59,6 +97,12 @@ class ProductViewModel extends ChangeNotifier {
     if (carts.contains(product)) {
       carts.remove(product);
       navigationService.showMessage('Removed ${product.title} from cart');
+
+      // also remove from checkout list
+      if (checkoutList.contains(product)) {
+        checkoutList.remove(product);
+      }
+
       notifyListeners();
     } else {
       navigationService.showMessage('Already removed from cart!');

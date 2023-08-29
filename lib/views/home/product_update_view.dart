@@ -136,13 +136,15 @@ class _ProductUpdateViewState extends State<ProductUpdateView> {
                     vertical: 18,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColor.blue,
+                    color: AppColor.green,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
                     child: Text(
                       'Update',
-                      style: AppTheme.mediumText,
+                      style: AppTheme.mediumText.copyWith(
+                        color: AppColor.deepBlack,
+                      ),
                     ),
                   ),
                 ),

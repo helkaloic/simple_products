@@ -78,7 +78,7 @@ class CustomBottomSheetView extends StatelessWidget {
                     vertical: 15,
                   ),
                   decoration: BoxDecoration(
-                    color: isAddedToCart ? AppColor.textGrey : AppColor.blue,
+                    color: isAddedToCart ? AppColor.textGrey : AppColor.green,
                     borderRadius: BorderRadius.circular(SMALL_PADDING),
                   ),
                   child: Center(
@@ -86,6 +86,7 @@ class CustomBottomSheetView extends StatelessWidget {
                       isAddedToCart ? 'Remove from cart' : 'Add to cart',
                       style: AppTheme.mediumText.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: AppColor.deepBlack,
                       ),
                     ),
                   ),
