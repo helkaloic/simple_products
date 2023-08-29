@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
@@ -88,7 +87,7 @@ class _ProductAddViewState extends State<ProductAddView> {
                   Expanded(
                     flex: 1,
                     child: GestureDetector(
-                      onTap: _imagePicker,
+                      onTap: () => viewModel.imagePicker(),
                       child: Container(
                         margin: const EdgeInsets.symmetric(
                           horizontal: SMALL_PADDING,
@@ -138,13 +137,5 @@ class _ProductAddViewState extends State<ProductAddView> {
         ),
       ),
     );
-  }
-
-  _imagePicker() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      debugPrint(image.name);
-      imageName = image.name;
-    }
   }
 }

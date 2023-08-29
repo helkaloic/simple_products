@@ -28,10 +28,20 @@ class _ProductListViewState extends State<ProductListView> {
 
   AppBar topAppBar() {
     return AppBar(
-      title: Text(
-        'Products',
-        style: AppTheme.bigTitle,
-      ),
+      title: Text.rich(TextSpan(
+        children: [
+          TextSpan(
+            text: 'Simple',
+            style: AppTheme.bigTitle,
+          ),
+          TextSpan(
+            text: 'Products',
+            style: AppTheme.bigTitle.copyWith(
+              color: AppColor.textGrey,
+            ),
+          ),
+        ],
+      )),
       backgroundColor: AppColor.cardGrey,
       centerTitle: true,
       actions: [

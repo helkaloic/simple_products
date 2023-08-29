@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:simple_products/config/network/api_provider.dart';
 import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/navigator.dart';
@@ -16,6 +17,7 @@ class ProductViewModel extends ChangeNotifier {
   final stockController = TextEditingController();
 
   List<ProductModel>? products;
+  String? _imageName;
 
   getAllProducts() async {
     navigationService.showLoader();
@@ -44,6 +46,14 @@ class ProductViewModel extends ChangeNotifier {
       navigationService.back();
       clearAllText();
       navigationService.back();
+    }
+  }
+
+  imagePicker() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      _imageName = image.name;
+      debugPrint(_imageName);
     }
   }
 
