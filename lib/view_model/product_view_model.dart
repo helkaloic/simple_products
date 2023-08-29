@@ -116,6 +116,7 @@ class ProductViewModel extends ChangeNotifier {
         pm.price = model.price;
         pm.description = model.description;
         pm.stock = model.stock;
+        break;
       }
     }
     notifyListeners();
@@ -141,11 +142,14 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
-  setBookmark(int index) {
-    if (index < products!.length) {
-      products![index].bookmark = !products![index].bookmark;
-      notifyListeners();
+  setBookmark(ProductModel product) {
+    for (ProductModel pm in products!) {
+      if (pm.id == product.id) {
+        pm.bookmark = !pm.bookmark;
+        break;
+      }
     }
+    notifyListeners();
   }
 
   imagePicker() async {

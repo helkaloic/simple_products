@@ -125,7 +125,7 @@ class _ProductListViewState extends State<ProductListView> {
                       child: ProductCardView(
                         size: size,
                         model: product,
-                        onFunction: () => viewModel.setBookmark(index),
+                        onFunction: () => viewModel.setBookmark(product),
                       ),
                     );
                   },

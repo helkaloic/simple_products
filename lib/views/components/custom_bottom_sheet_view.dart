@@ -169,7 +169,7 @@ class CustomBottomSheetView extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => viewModel.setBookmark(index),
+            onTap: () => viewModel.setBookmark(product),
             child: Padding(
               padding: const EdgeInsets.only(
                 top: SMALL_PADDING,
