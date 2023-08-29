@@ -57,6 +57,12 @@ class ProductViewModel extends ChangeNotifier {
     if (response != null) {
       products!.removeAt(index);
       navigationService.showMessage('Removed: ${product.title}');
+
+      // also remove from cart
+      if (carts.contains(product)) {
+        carts.remove(product);
+      }
+
       notifyListeners();
     }
   }
