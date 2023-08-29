@@ -7,7 +7,7 @@ import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 
-import 'components/product_card_view.dart';
+import '../components/product_card_view.dart';
 
 class ProductListView extends StatefulWidget {
   const ProductListView({super.key});

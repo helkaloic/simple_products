@@ -6,7 +6,7 @@ import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 
-import 'components/custom_text_field_view.dart';
+import '../components/custom_text_field_view.dart';
 
 class ProductAddView extends StatefulWidget {
   const ProductAddView({super.key});
@@ -89,8 +89,8 @@ class _ProductAddViewState extends State<ProductAddView> {
                     child: GestureDetector(
                       onTap: () => viewModel.imagePicker(),
                       child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: SMALL_PADDING,
+                        margin: const EdgeInsets.only(
+                          left: SMALL_PADDING,
                         ),
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
