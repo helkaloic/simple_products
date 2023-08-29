@@ -7,4 +7,6 @@ class AppRoute {
 
   static const String search = '/search';
   static const String bookmark = '/bookmark';
+
+  static const String cart = '/cart';
 }

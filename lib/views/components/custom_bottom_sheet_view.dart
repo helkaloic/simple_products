@@ -10,7 +10,7 @@ import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 import 'package:simple_products/views/components/custom_rating_bar_view.dart';
 
-class CustomBottomSheetView extends StatefulWidget {
+class CustomBottomSheetView extends StatelessWidget {
   const CustomBottomSheetView({
     super.key,
     required this.product,
@@ -21,14 +21,8 @@ class CustomBottomSheetView extends StatefulWidget {
   final int index;
 
   @override
-  State<CustomBottomSheetView> createState() => _CustomBottomSheetViewState();
-}
-
-class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
-  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final viewModel = context.watch<ProductViewModel>();
     return Container(
       width: size.width,
       decoration: const BoxDecoration(
@@ -45,7 +39,7 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              topTitle(viewModel),
+              topTitle(),
               addHeightSpace(MEDIUM_PADDING),
               Row(
                 mainAxisSize: MainAxisSize.max,
@@ -56,7 +50,7 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
                 ],
               ),
               addHeightSpace(MEDIUM_PADDING),
-              titleAndPriceProduct(viewModel),
+              titleAndPriceProduct(),
               addHeightSpace(SMALL_PADDING),
               productDescription(),
               addHeightSpace(MEDIUM_PADDING),
@@ -68,61 +62,70 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
     );
   }
 
-  Row buttons() {
-    return Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 15,
-              ),
-              decoration: BoxDecoration(
-                color: AppColor.blue,
-                borderRadius: BorderRadius.circular(SMALL_PADDING),
-              ),
-              child: Center(
-                child: Text(
-                  'Add to cart',
-                  style: AppTheme.mediumText.copyWith(
-                    fontWeight: FontWeight.bold,
+  Widget buttons() {
+    return Consumer<ProductViewModel>(
+      builder: (context, viewModel, child) {
+        final isAddedToCart = viewModel.carts.contains(product);
+        return Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap:
+                    isAddedToCart ? () {} : () => viewModel.addToCart(product),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isAddedToCart ? AppColor.textGrey : AppColor.blue,
+                    borderRadius: BorderRadius.circular(SMALL_PADDING),
+                  ),
+                  child: Center(
+                    child: Text(
+                      isAddedToCart ? 'Added to cart' : 'Add to cart',
+                      style: AppTheme.mediumText.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        addWidthSpace(MEDIUM_PADDING),
-        Expanded(
-          child: GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 15,
-              ),
-              decoration: BoxDecoration(
-                color: AppColor.cardLightGrey,
-                borderRadius: BorderRadius.circular(SMALL_PADDING),
-              ),
-              child: Center(
-                child: Text(
-                  'Remove',
-                  style: AppTheme.mediumText.copyWith(
-                    fontWeight: FontWeight.bold,
+            addWidthSpace(MEDIUM_PADDING),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  viewModel.deleteProduct(product, index);
+                  viewModel.navigationService.back();
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColor.cardLightGrey,
+                    borderRadius: BorderRadius.circular(SMALL_PADDING),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Remove',
+                      style: AppTheme.mediumText.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
   Text productDescription() {
     return Text(
-      widget.product.description ?? '',
+      product.description ?? '',
       overflow: TextOverflow.ellipsis,
       maxLines: 6,
       textAlign: TextAlign.justify,
@@ -135,52 +138,54 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
     );
   }
 
-  Row titleAndPriceProduct(ProductViewModel viewModel) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 4,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.product.title ?? '',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppTheme.bigTitle.copyWith(
-                  fontSize: 45.sp,
+  Widget titleAndPriceProduct() {
+    return Consumer<ProductViewModel>(
+      builder: (context, viewModel, child) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 4,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.title ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTheme.bigTitle.copyWith(
+                    fontSize: 45.sp,
+                  ),
                 ),
-              ),
-              addHeightSpace(SMALL_PADDING),
-              Text(
-                '\$${widget.product.price ?? ''}',
-                style: AppTheme.bigTitle.copyWith(
-                  fontSize: 56.sp,
-                  color: AppColor.green,
+                addHeightSpace(SMALL_PADDING),
+                Text(
+                  '\$${product.price ?? ''}',
+                  style: AppTheme.bigTitle.copyWith(
+                    fontSize: 56.sp,
+                    color: AppColor.green,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        GestureDetector(
-          onTap: () => viewModel.setBookmark(widget.index),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: SMALL_PADDING,
-              bottom: SMALL_PADDING,
-            ),
-            child: Icon(
-              widget.product.bookmark
-                  ? Icons.bookmark_outlined
-                  : Icons.bookmark_border_outlined,
-              color: AppColor.textGrey,
-              size: 36,
+              ],
             ),
           ),
-        ),
-      ],
+          GestureDetector(
+            onTap: () => viewModel.setBookmark(index),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: SMALL_PADDING,
+                bottom: SMALL_PADDING,
+              ),
+              child: Icon(
+                product.bookmark
+                    ? Icons.bookmark_outlined
+                    : Icons.bookmark_border_outlined,
+                color: AppColor.textGrey,
+                size: 36,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -200,7 +205,7 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
                   ),
                 ),
                 TextSpan(
-                  text: '${widget.product.brand}',
+                  text: '${product.brand}',
                   style: AppTheme.mediumText,
                 ),
               ],
@@ -220,7 +225,7 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
                   ),
                 ),
                 TextSpan(
-                  text: '${widget.product.discountPercentage}%',
+                  text: '${product.discountPercentage}%',
                   style: AppTheme.mediumText,
                 ),
               ],
@@ -239,7 +244,7 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
                   ),
                 ),
                 TextSpan(
-                  text: '${widget.product.stock}',
+                  text: '${product.stock}',
                   style: AppTheme.mediumText,
                 ),
               ],
@@ -248,7 +253,7 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
           ),
           addHeightSpace(SMALL_PADDING),
           RatingBarView(
-            rating: widget.product.rating ?? 0.0,
+            rating: product.rating ?? 0.0,
             size: 21,
           ),
         ],
@@ -268,9 +273,9 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: CarouselSlider.builder(
-            itemCount: widget.product.images!.length,
+            itemCount: product.images!.length,
             itemBuilder: (context, index, realIndex) => CachedNetworkImage(
-              imageUrl: widget.product.images![index],
+              imageUrl: product.images![index],
               errorWidget: (context, url, error) => errorImage(),
               placeholder: (context, url) => loadingImage(),
               height: 150,
@@ -287,33 +292,35 @@ class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
     );
   }
 
-  Stack topTitle(ProductViewModel viewModel) {
-    return Stack(
-      children: [
-        GestureDetector(
-          onTap: () => viewModel.navigationService.back(),
-          child: const Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(Icons.close, color: AppColor.textGrey),
-          ),
-        ),
-        GestureDetector(
-          onTap: () => viewModel.navigateToEdit(widget.product),
-          child: const Align(
-            alignment: Alignment.centerRight,
-            child: Icon(Icons.edit, color: AppColor.textGrey),
-          ),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            'Product details',
-            style: AppTheme.bigTitle.copyWith(
-              fontSize: 50.sp,
+  Widget topTitle() {
+    return Consumer<ProductViewModel>(
+      builder: (context, viewModel, child) => Stack(
+        children: [
+          GestureDetector(
+            onTap: () => viewModel.navigationService.back(),
+            child: const Align(
+              alignment: Alignment.centerLeft,
+              child: Icon(Icons.close, color: AppColor.textGrey),
             ),
           ),
-        ),
-      ],
+          GestureDetector(
+            onTap: () => viewModel.navigateToEdit(product),
+            child: const Align(
+              alignment: Alignment.centerRight,
+              child: Icon(Icons.edit, color: AppColor.textGrey),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Product details',
+              style: AppTheme.bigTitle.copyWith(
+                fontSize: 50.sp,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

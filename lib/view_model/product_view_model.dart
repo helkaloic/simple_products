@@ -20,8 +20,34 @@ class ProductViewModel extends ChangeNotifier {
   final desController = TextEditingController();
   final stockController = TextEditingController();
 
+  List<ProductModel> carts = [];
   List<ProductModel>? products;
   String? _imageName;
+
+  removeAllCart() {
+    carts.clear();
+    navigationService.showMessage('Removed all product in cart!');
+    notifyListeners();
+  }
+
+  removeFromCart(ProductModel product) {
+    if (carts.contains(product)) {
+      carts.remove(product);
+      navigationService.showMessage('Removed ${product.title} from cart');
+      notifyListeners();
+    } else {
+      navigationService.showMessage('Already removed from cart!');
+    }
+  }
+
+  addToCart(ProductModel product) {
+    if (!carts.contains(product)) {
+      carts.add(product);
+      notifyListeners();
+    } else {
+      navigationService.showMessage('Already added to cart!');
+    }
+  }
 
   deleteProduct(ProductModel product, int index) async {
     navigationService.showLoader();
@@ -30,7 +56,7 @@ class ProductViewModel extends ChangeNotifier {
     navigationService.back();
     if (response != null) {
       products!.removeAt(index);
-      navigationService.showMessage('Deleted ${product.title}');
+      navigationService.showMessage('Removed: ${product.title}');
       notifyListeners();
     }
   }

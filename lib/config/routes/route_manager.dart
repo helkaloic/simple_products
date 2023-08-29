@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/navigator.dart';
 import 'package:simple_products/views/bookmark/bookmark_view.dart';
+import 'package:simple_products/views/cart/cart_view.dart';
 import 'package:simple_products/views/home/product_add_view.dart';
 import 'package:simple_products/views/home/product_update_view.dart';
 import 'package:simple_products/views/home/product_list_view.dart';
@@ -56,6 +57,10 @@ final GoRouter router = GoRouter(
       ],
       builder: (context, state, navigationShell) =>
           MainScreen(nagivationShell: navigationShell),
-    )
+    ),
+    GoRoute(
+      path: AppRoute.cart,
+      builder: (context, state) => const CartView(),
+    ),
   ],
 );

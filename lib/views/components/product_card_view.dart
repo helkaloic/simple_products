@@ -11,12 +11,14 @@ class ProductCardView extends StatelessWidget {
     super.key,
     required this.size,
     required this.model,
-    required this.onBookmark,
+    required this.onFunction,
+    this.isCartView = false,
   });
 
+  final bool isCartView;
   final Size size;
   final ProductModel model;
-  final VoidCallback onBookmark;
+  final VoidCallback onFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -75,13 +77,18 @@ class ProductCardView extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: onBookmark,
-                    child: Icon(
-                      model.bookmark
-                          ? Icons.bookmark_outlined
-                          : Icons.bookmark_border_outlined,
-                      color: AppColor.textGrey,
-                    ),
+                    onTap: onFunction,
+                    child: isCartView
+                        ? const Icon(
+                            Icons.delete_outline,
+                            color: AppColor.textGrey,
+                          )
+                        : Icon(
+                            model.bookmark
+                                ? Icons.bookmark_outlined
+                                : Icons.bookmark_border_outlined,
+                            color: AppColor.textGrey,
+                          ),
                   ),
                 ),
               ],
