@@ -8,6 +8,7 @@ import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
+import 'package:simple_products/views/components/custom_rating_bar_view.dart';
 
 class CustomBottomSheetView extends StatelessWidget {
   const CustomBottomSheetView({
@@ -122,6 +123,7 @@ class CustomBottomSheetView extends StatelessWidget {
         color: AppColor.textGrey,
         fontWeight: FontWeight.normal,
         fontSize: 32.sp,
+        height: 1.75,
       ),
     );
   }
@@ -148,7 +150,7 @@ class CustomBottomSheetView extends StatelessWidget {
               Text(
                 '\$${product.price ?? ''}',
                 style: AppTheme.bigTitle.copyWith(
-                  fontSize: 54.sp,
+                  fontSize: 56.sp,
                   color: AppColor.green,
                 ),
               ),
@@ -230,30 +232,9 @@ class CustomBottomSheetView extends StatelessWidget {
             overflow: TextOverflow.fade,
           ),
           addHeightSpace(SMALL_PADDING),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text.rich(TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Rating: ',
-                    style: AppTheme.mediumText.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.textGrey,
-                    ),
-                  ),
-                  TextSpan(
-                    text: '${product.rating}',
-                    style: AppTheme.mediumText,
-                  ),
-                ],
-              )),
-              const Icon(
-                Icons.star,
-                color: Colors.yellow,
-                size: 20,
-              ),
-            ],
+          RatingBarView(
+            rating: product.rating ?? 0.0,
+            size: 21,
           ),
         ],
       ),
