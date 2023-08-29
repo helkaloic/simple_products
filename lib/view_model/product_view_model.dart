@@ -19,10 +19,35 @@ class ProductViewModel extends ChangeNotifier {
   final priceController = TextEditingController();
   final desController = TextEditingController();
   final stockController = TextEditingController();
+  final searchController = TextEditingController();
 
   List<ProductModel> carts = [];
+  List<ProductModel> searchProducts = [];
   List<ProductModel>? products;
   String? _imageName;
+
+  searchProduct(String text) {
+    searchProducts = products!
+        .where(
+          (p) =>
+              (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
+              (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
+              (p.price ?? '')
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              (p.category ?? '').toLowerCase().contains(text.toLowerCase()),
+        )
+        .toList();
+    notifyListeners();
+  }
+
+  clearSearchResult() {
+    searchController.clear();
+    searchProducts.clear();
+    setUnfocusEditText();
+    notifyListeners();
+  }
 
   removeAllCart() {
     carts.clear();
@@ -140,6 +165,16 @@ class ProductViewModel extends ChangeNotifier {
       getAllProducts();
       navigationService.showMessage('Created: ${model.title}!');
     }
+  }
+
+  removeAllBookmark() {
+    for (ProductModel pm in products!) {
+      if (pm.bookmark) {
+        pm.bookmark = false;
+      }
+    }
+    navigationService.showMessage('Removed all bookmark!');
+    notifyListeners();
   }
 
   setBookmark(ProductModel product) {

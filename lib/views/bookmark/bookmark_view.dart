@@ -73,7 +73,7 @@ class _BookmarkViewState extends State<BookmarkView> {
       actions: [
         Consumer<ProductViewModel>(
           builder: (context, viewModel, child) => GestureDetector(
-            onTap: () => viewModel.removeAllCart(),
+            onTap: () => viewModel.removeAllBookmark(),
             child: Container(
               margin: const EdgeInsets.only(right: MEDIUM_PADDING),
               child: const Icon(

@@ -70,8 +70,9 @@ class CustomBottomSheetView extends StatelessWidget {
           children: [
             Expanded(
               child: GestureDetector(
-                onTap:
-                    isAddedToCart ? () {} : () => viewModel.addToCart(product),
+                onTap: isAddedToCart
+                    ? () => viewModel.removeFromCart(product)
+                    : () => viewModel.addToCart(product),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 15,
@@ -82,7 +83,7 @@ class CustomBottomSheetView extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      isAddedToCart ? 'Added to cart' : 'Add to cart',
+                      isAddedToCart ? 'Remove from cart' : 'Add to cart',
                       style: AppTheme.mediumText.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -108,7 +109,7 @@ class CustomBottomSheetView extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Remove',
+                      'Delete',
                       style: AppTheme.mediumText.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/views/components/custom_navigation_bar_view.dart';
 
 class MainScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _navigator(int index) {
+    setUnfocusEditText();
     widget.nagivationShell.goBranch(
       index,
       initialLocation: index == widget.nagivationShell.currentIndex,
