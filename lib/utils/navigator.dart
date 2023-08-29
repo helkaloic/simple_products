@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_products/config/theme/theme.dart';
+import 'package:simple_products/models/product_model.dart';
+import 'package:simple_products/views/components/custom_bottom_sheet_view.dart';
 
 class NavigatorService {
   late GlobalKey<NavigatorState> navigationKey;
@@ -15,6 +17,14 @@ class NavigatorService {
       );
 
   back() => navigationKey.currentState!.pop();
+
+  showBottomSheet(ProductModel model) {
+    showModalBottomSheet(
+      context: navigationKey.currentContext!,
+      isScrollControlled: true, // Allow dynamic height
+      builder: (context) => CustomBottomSheetView(product: model),
+    );
+  }
 
   showMessage(String text) {
     ScaffoldMessenger.of(navigationKey.currentContext!).showSnackBar(

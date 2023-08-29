@@ -57,6 +57,9 @@ dependencies:
   # Image picker
   image_picker: ^1.0.2
 
+  # Image slider
+  carousel_slider: ^4.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

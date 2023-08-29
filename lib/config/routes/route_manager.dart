@@ -1,8 +1,9 @@
 import 'package:go_router/go_router.dart';
+import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/navigator.dart';
 import 'package:simple_products/views/bookmark/bookmark_view.dart';
 import 'package:simple_products/views/home/product_add_view.dart';
-import 'package:simple_products/views/home/product_detail_view.dart';
+import 'package:simple_products/views/home/product_update_view.dart';
 import 'package:simple_products/views/home/product_list_view.dart';
 import 'package:simple_products/views/main_screen.dart';
 import 'package:simple_products/views/search/search_view.dart';
@@ -29,8 +30,10 @@ final GoRouter router = GoRouter(
               builder: (context, state) => const ProductAddView(),
             ),
             GoRoute(
-              path: AppRoute.productDetail,
-              builder: (context, state) => const ProductDetailView(),
+              path: AppRoute.updateProduct,
+              builder: (context, state) => ProductUpdateView(
+                product: state.extra as ProductModel,
+              ),
             ),
           ],
         ),

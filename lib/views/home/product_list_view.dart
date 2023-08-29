@@ -79,10 +79,7 @@ class _ProductListViewState extends State<ProductListView> {
                 itemBuilder: (context, index) {
                   final product = viewModel.products![index];
                   return GestureDetector(
-                    onTap: () {
-                      debugPrint(product.title);
-                      // viewModel.deleteProduct(product, index);
-                    },
+                    onTap: () => viewModel.showBottomSheet(product),
                     child: ProductCardView(
                       size: size,
                       model: product,

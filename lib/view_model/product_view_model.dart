@@ -4,6 +4,7 @@ import 'package:simple_products/config/network/api_provider.dart';
 import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/navigator.dart';
 import 'package:simple_products/utils/utils.dart';
+import 'package:simple_products/views/home/product_update_view.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final NavigatorService navigationService;
@@ -32,6 +33,20 @@ class ProductViewModel extends ChangeNotifier {
       navigationService.showMessage('Deleted ${product.title}');
       notifyListeners();
     }
+  }
+
+  navigateToEdit(ProductModel model) {
+    clearAllText();
+    titleController.text = model.title ?? '';
+    priceController.text = '${model.price ?? ''}';
+    desController.text = model.description ?? '';
+    stockController.text = '${model.stock ?? ''}';
+
+    navigationService.push(ProductUpdateView(product: model));
+  }
+
+  showBottomSheet(ProductModel model) {
+    navigationService.showBottomSheet(model);
   }
 
   getAllProducts() async {
