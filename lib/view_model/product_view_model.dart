@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:simple_products/config/network/api_provider.dart';
 import 'package:simple_products/models/product_model.dart';
 import 'package:simple_products/utils/navigator.dart';
+import 'package:simple_products/utils/utils.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final NavigatorService navigationService;
@@ -10,6 +11,8 @@ class ProductViewModel extends ChangeNotifier {
   ProductViewModel(this.navigationService) {
     getAllProducts();
   }
+
+  final _api = ApiProvider();
 
   final titleController = TextEditingController();
   final priceController = TextEditingController();
@@ -19,14 +22,23 @@ class ProductViewModel extends ChangeNotifier {
   List<ProductModel>? products;
   String? _imageName;
 
-  getAllProducts() async {
+  deleteProduct(ProductModel product, int index) async {
     navigationService.showLoader();
 
-    final response = await ApiProvider().get('/products');
+    final response = await _api.delete('/products/${product.id}');
+    navigationService.back();
+    if (response != null) {
+      products!.removeAt(index);
+      navigationService.showMessage('Deleted ${product.title}');
+      notifyListeners();
+    }
+  }
+
+  getAllProducts() async {
+    final response = await _api.get('/products');
     if (response != null) {
       final result = response["products"] as List<dynamic>;
       products = result.map((e) => ProductModel.fromMap(e)).toList();
-      navigationService.back();
       notifyListeners();
     }
   }
@@ -41,11 +53,12 @@ class ProductViewModel extends ChangeNotifier {
       stock: int.parse(stockController.text),
     );
 
-    final response = await ApiProvider().post('/products/add', model.toMap());
+    final response = await _api.post('/products/add', model.toMap());
+    navigationService.back();
     if (response != null) {
-      navigationService.back();
+      setUnfocusEditText();
       clearAllText();
-      navigationService.back();
+      navigationService.showMessage('Product created!');
     }
   }
 

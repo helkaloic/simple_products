@@ -25,3 +25,5 @@ Widget errorImage() => Container(
             Icon(Icons.image_not_supported_outlined, color: AppColor.textGrey),
       ),
     );
+
+setUnfocusEditText() => FocusManager.instance.primaryFocus?.unfocus();

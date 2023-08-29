@@ -66,14 +66,16 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                         Icon(
                           e.icon,
                           size: 60.h,
-                          color: Colors.white.withOpacity(.65),
+                          color: Colors.white
+                              .withOpacity(_current == index ? .8 : .5),
                         ),
                         addHeightSpace(8.h),
                         Text(
                           e.label,
                           style: TextStyle(
                             fontSize: 26.sp,
-                            color: Colors.white,
+                            color: Colors.white
+                                .withOpacity(_current == index ? 1 : .85),
                             fontWeight: _current == index
                                 ? FontWeight.w700
                                 : FontWeight.normal,

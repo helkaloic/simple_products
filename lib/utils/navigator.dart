@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_products/config/theme/theme.dart';
 
 class NavigatorService {
   late GlobalKey<NavigatorState> navigationKey;
@@ -14,6 +15,18 @@ class NavigatorService {
       );
 
   back() => navigationKey.currentState!.pop();
+
+  showMessage(String text) {
+    ScaffoldMessenger.of(navigationKey.currentContext!).showSnackBar(
+      SnackBar(
+        backgroundColor: AppColor.deepBlack.withOpacity(.8),
+        content: Text(
+          text,
+          style: AppTheme.mediumText,
+        ),
+      ),
+    );
+  }
 
   showLoader() {
     Future.delayed(

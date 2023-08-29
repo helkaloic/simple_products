@@ -6,8 +6,7 @@ import 'package:simple_products/config/routes/route_manager.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
-
-import '../components/product_card_view.dart';
+import 'package:simple_products/views/components/product_card_view.dart';
 
 class ProductListView extends StatefulWidget {
   const ProductListView({super.key});
@@ -59,23 +58,39 @@ class _ProductListViewState extends State<ProductListView> {
   Widget gridviewProducts() {
     final size = MediaQuery.of(context).size;
     final viewModel = context.watch<ProductViewModel>();
-    return Padding(
-      padding: const EdgeInsets.all(SMALL_PADDING),
-      child: viewModel.products == null
-          ? Container()
-          : GridView.builder(
-              itemCount: viewModel.products!.length,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: size.width / 2,
-                mainAxisExtent: 450.h,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
+    return RefreshIndicator(
+      onRefresh: () => viewModel.getAllProducts(),
+      backgroundColor: AppColor.cardGrey,
+      color: AppColor.green,
+      child: Padding(
+        padding: const EdgeInsets.all(SMALL_PADDING),
+        child: viewModel.products == null
+            ? const Center(
+                child: CircularProgressIndicator(color: AppColor.textGrey),
+              )
+            : GridView.builder(
+                itemCount: viewModel.products!.length,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: size.width / 2,
+                  mainAxisExtent: 450.h,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                ),
+                itemBuilder: (context, index) {
+                  final product = viewModel.products![index];
+                  return GestureDetector(
+                    onTap: () {
+                      debugPrint(product.title);
+                      // viewModel.deleteProduct(product, index);
+                    },
+                    child: ProductCardView(
+                      size: size,
+                      model: product,
+                    ),
+                  );
+                },
               ),
-              itemBuilder: (context, index) => ProductCardView(
-                size: size,
-                model: viewModel.products![index],
-              ),
-            ),
+      ),
     );
   }
 }
