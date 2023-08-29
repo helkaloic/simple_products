@@ -45,10 +45,6 @@ class ProductViewModel extends ChangeNotifier {
     navigationService.push(ProductUpdateView(product: model));
   }
 
-  showBottomSheet(ProductModel model) {
-    navigationService.showBottomSheet(model);
-  }
-
   getAllProducts() async {
     final response = await _api.get('/products');
     if (response != null) {
@@ -56,6 +52,41 @@ class ProductViewModel extends ChangeNotifier {
       products = result.map((e) => ProductModel.fromMap(e)).toList();
       notifyListeners();
     }
+  }
+
+  updateProduct(int id) async {
+    navigationService.showLoader();
+
+    final model = ProductModel(
+      title: titleController.text.trim(),
+      description: desController.text.trim(),
+      price: int.parse(priceController.text),
+      stock: int.parse(stockController.text),
+    );
+
+    final response = await _api.put('/products/$id', model.toMap());
+    navigationService.back();
+    if (response != null) {
+      setUnfocusEditText();
+      clearAllText();
+
+      // getAllProducts(); // use this instead in the real api
+      _updateProductLists(id, model);
+
+      navigationService.back();
+    }
+  }
+
+  _updateProductLists(int id, ProductModel model) {
+    for (ProductModel pm in products!) {
+      if (pm.id == id) {
+        pm.title = model.title;
+        pm.price = model.price;
+        pm.description = model.description;
+        pm.stock = model.stock;
+      }
+    }
+    notifyListeners();
   }
 
   createProduct() async {
@@ -73,7 +104,15 @@ class ProductViewModel extends ChangeNotifier {
     if (response != null) {
       setUnfocusEditText();
       clearAllText();
-      navigationService.showMessage('Product created!');
+      getAllProducts();
+      navigationService.showMessage('Created: ${model.title}!');
+    }
+  }
+
+  setBookmark(int index) {
+    if (index < products!.length) {
+      products![index].bookmark = !products![index].bookmark;
+      notifyListeners();
     }
   }
 

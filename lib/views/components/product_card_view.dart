@@ -11,10 +11,12 @@ class ProductCardView extends StatelessWidget {
     super.key,
     required this.size,
     required this.model,
+    required this.onBookmark,
   });
 
   final Size size;
   final ProductModel model;
+  final VoidCallback onBookmark;
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +72,16 @@ class ProductCardView extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   flex: 1,
-                  child: Icon(
-                    Icons.bookmark_border,
-                    color: AppColor.textGrey,
+                  child: GestureDetector(
+                    onTap: onBookmark,
+                    child: Icon(
+                      model.bookmark
+                          ? Icons.bookmark_outlined
+                          : Icons.bookmark_border_outlined,
+                      color: AppColor.textGrey,
+                    ),
                   ),
                 ),
               ],

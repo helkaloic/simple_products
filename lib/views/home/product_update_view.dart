@@ -27,14 +27,21 @@ class _ProductUpdateViewState extends State<ProductUpdateView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.deepBlack,
-      appBar: topAppBar(),
-      body: addingForm(),
+    final viewModel = context.watch<ProductViewModel>();
+    return WillPopScope(
+      onWillPop: () async {
+        viewModel.clearAllText();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.deepBlack,
+        appBar: topAppBar(viewModel),
+        body: addingForm(viewModel),
+      ),
     );
   }
 
-  AppBar topAppBar() {
+  AppBar topAppBar(ProductViewModel viewModel) {
     return AppBar(
       title: Text(
         'Update Product',
@@ -43,7 +50,10 @@ class _ProductUpdateViewState extends State<ProductUpdateView> {
       backgroundColor: AppColor.cardGrey,
       centerTitle: true,
       leading: GestureDetector(
-        onTap: () => context.pop(),
+        onTap: () {
+          viewModel.clearAllText();
+          context.pop();
+        },
         child: Container(
           padding: const EdgeInsets.only(left: SMALL_PADDING),
           child: const Icon(Icons.arrow_back_ios, color: Colors.white),
@@ -52,8 +62,7 @@ class _ProductUpdateViewState extends State<ProductUpdateView> {
     );
   }
 
-  Widget addingForm() {
-    final viewModel = context.watch<ProductViewModel>();
+  Widget addingForm(ProductViewModel viewModel) {
     return SingleChildScrollView(
       child: Form(
         key: formKey,
@@ -118,7 +127,7 @@ class _ProductUpdateViewState extends State<ProductUpdateView> {
               GestureDetector(
                 onTap: () {
                   if (formKey.currentState!.validate()) {
-                    viewModel.createProduct();
+                    viewModel.updateProduct(widget.product.id ?? 0);
                   }
                 },
                 child: Container(

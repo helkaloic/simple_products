@@ -18,11 +18,14 @@ class NavigatorService {
 
   back() => navigationKey.currentState!.pop();
 
-  showBottomSheet(ProductModel model) {
+  showBottomSheet(ProductModel model, int index) {
     showModalBottomSheet(
       context: navigationKey.currentContext!,
       isScrollControlled: true, // Allow dynamic height
-      builder: (context) => CustomBottomSheetView(product: model),
+      builder: (context) => CustomBottomSheetView(
+        product: model,
+        index: index,
+      ),
     );
   }
 

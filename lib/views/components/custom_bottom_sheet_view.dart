@@ -10,14 +10,21 @@ import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 import 'package:simple_products/views/components/custom_rating_bar_view.dart';
 
-class CustomBottomSheetView extends StatelessWidget {
+class CustomBottomSheetView extends StatefulWidget {
   const CustomBottomSheetView({
     super.key,
     required this.product,
+    required this.index,
   });
 
   final ProductModel product;
+  final int index;
 
+  @override
+  State<CustomBottomSheetView> createState() => _CustomBottomSheetViewState();
+}
+
+class _CustomBottomSheetViewState extends State<CustomBottomSheetView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -49,7 +56,7 @@ class CustomBottomSheetView extends StatelessWidget {
                 ],
               ),
               addHeightSpace(MEDIUM_PADDING),
-              titleAndPriceProduct(),
+              titleAndPriceProduct(viewModel),
               addHeightSpace(SMALL_PADDING),
               productDescription(),
               addHeightSpace(MEDIUM_PADDING),
@@ -115,7 +122,7 @@ class CustomBottomSheetView extends StatelessWidget {
 
   Text productDescription() {
     return Text(
-      product.description ?? '',
+      widget.product.description ?? '',
       overflow: TextOverflow.ellipsis,
       maxLines: 6,
       textAlign: TextAlign.justify,
@@ -128,7 +135,7 @@ class CustomBottomSheetView extends StatelessWidget {
     );
   }
 
-  Row titleAndPriceProduct() {
+  Row titleAndPriceProduct(ProductViewModel viewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -139,7 +146,7 @@ class CustomBottomSheetView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                product.title ?? '',
+                widget.product.title ?? '',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppTheme.bigTitle.copyWith(
@@ -148,7 +155,7 @@ class CustomBottomSheetView extends StatelessWidget {
               ),
               addHeightSpace(SMALL_PADDING),
               Text(
-                '\$${product.price ?? ''}',
+                '\$${widget.product.price ?? ''}',
                 style: AppTheme.bigTitle.copyWith(
                   fontSize: 56.sp,
                   color: AppColor.green,
@@ -157,12 +164,20 @@ class CustomBottomSheetView extends StatelessWidget {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: SMALL_PADDING, bottom: SMALL_PADDING),
-          child: Icon(
-            Icons.bookmark_border_outlined,
-            color: AppColor.textGrey,
-            size: 36,
+        GestureDetector(
+          onTap: () => viewModel.setBookmark(widget.index),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: SMALL_PADDING,
+              bottom: SMALL_PADDING,
+            ),
+            child: Icon(
+              widget.product.bookmark
+                  ? Icons.bookmark_outlined
+                  : Icons.bookmark_border_outlined,
+              color: AppColor.textGrey,
+              size: 36,
+            ),
           ),
         ),
       ],
@@ -185,7 +200,7 @@ class CustomBottomSheetView extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${product.brand}',
+                  text: '${widget.product.brand}',
                   style: AppTheme.mediumText,
                 ),
               ],
@@ -205,7 +220,7 @@ class CustomBottomSheetView extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${product.discountPercentage}%',
+                  text: '${widget.product.discountPercentage}%',
                   style: AppTheme.mediumText,
                 ),
               ],
@@ -224,7 +239,7 @@ class CustomBottomSheetView extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${product.stock}',
+                  text: '${widget.product.stock}',
                   style: AppTheme.mediumText,
                 ),
               ],
@@ -233,7 +248,7 @@ class CustomBottomSheetView extends StatelessWidget {
           ),
           addHeightSpace(SMALL_PADDING),
           RatingBarView(
-            rating: product.rating ?? 0.0,
+            rating: widget.product.rating ?? 0.0,
             size: 21,
           ),
         ],
@@ -253,9 +268,9 @@ class CustomBottomSheetView extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: CarouselSlider.builder(
-            itemCount: product.images!.length,
+            itemCount: widget.product.images!.length,
             itemBuilder: (context, index, realIndex) => CachedNetworkImage(
-              imageUrl: product.images![index],
+              imageUrl: widget.product.images![index],
               errorWidget: (context, url, error) => errorImage(),
               placeholder: (context, url) => loadingImage(),
               height: 150,
@@ -283,7 +298,7 @@ class CustomBottomSheetView extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () => viewModel.navigateToEdit(product),
+          onTap: () => viewModel.navigateToEdit(widget.product),
           child: const Align(
             alignment: Alignment.centerRight,
             child: Icon(Icons.edit, color: AppColor.textGrey),

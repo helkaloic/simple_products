@@ -15,6 +15,7 @@ class ProductModel {
   String? category;
   String? thumbnail;
   List<String>? images;
+  bool bookmark;
   ProductModel({
     this.id,
     this.title,
@@ -27,6 +28,7 @@ class ProductModel {
     this.category,
     this.thumbnail,
     this.images,
+    this.bookmark = false,
   });
 
   ProductModel copyWith({
@@ -41,6 +43,7 @@ class ProductModel {
     String? category,
     String? thumbnail,
     List<String>? images,
+    bool? bookmark,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -54,23 +57,26 @@ class ProductModel {
       category: category ?? this.category,
       thumbnail: thumbnail ?? this.thumbnail,
       images: images ?? this.images,
+      bookmark: bookmark ?? this.bookmark,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'title': title,
-      'description': description,
-      'price': price,
-      'discountPercentage': discountPercentage,
-      'rating': rating,
-      'stock': stock,
-      'brand': brand,
-      'category': category,
-      'thumbnail': thumbnail,
-      'images': images,
+    final map = <String, dynamic>{
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (price != null) 'price': price,
+      if (discountPercentage != null) 'discountPercentage': discountPercentage,
+      if (rating != null) 'rating': rating,
+      if (stock != null) 'stock': stock,
+      if (brand != null) 'brand': brand,
+      if (category != null) 'category': category,
+      if (thumbnail != null) 'thumbnail': thumbnail,
+      if (images != null) 'images': images,
     };
+
+    return map;
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
@@ -102,7 +108,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, title: $title, description: $description, price: $price, discountPercentage: $discountPercentage, rating: $rating, stock: $stock, brand: $brand, category: $category, thumbnail: $thumbnail, images: $images)';
+    return 'ProductModel(id: $id, title: $title, description: $description, price: $price, discountPercentage: $discountPercentage, rating: $rating, stock: $stock, brand: $brand, category: $category, thumbnail: $thumbnail, images: $images, bookmark: $bookmark)';
   }
 
   @override
@@ -119,6 +125,7 @@ class ProductModel {
         other.brand == brand &&
         other.category == category &&
         other.thumbnail == thumbnail &&
+        other.bookmark == bookmark &&
         listEquals(other.images, images);
   }
 
@@ -134,6 +141,7 @@ class ProductModel {
         brand.hashCode ^
         category.hashCode ^
         thumbnail.hashCode ^
+        bookmark.hashCode ^
         images.hashCode;
   }
 }

@@ -79,10 +79,12 @@ class _ProductListViewState extends State<ProductListView> {
                 itemBuilder: (context, index) {
                   final product = viewModel.products![index];
                   return GestureDetector(
-                    onTap: () => viewModel.showBottomSheet(product),
+                    onTap: () => viewModel.navigationService
+                        .showBottomSheet(product, index),
                     child: ProductCardView(
                       size: size,
                       model: product,
+                      onBookmark: () => viewModel.setBookmark(index),
                     ),
                   );
                 },
