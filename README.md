@@ -30,18 +30,16 @@ Download APK [SimpleProducts.apk](https://github.com/helkaloic/simple_products/r
 
 - Home & product detail screen
 
-![home](https://github.com/helkaloic/simple_products/assets/59311731/664d7453-8a24-4be6-a0a3-9242cf47da4d)
-
+![home](https://github.com/helkaloic/simple_products/assets/59311731/101638e7-3467-42c0-849b-de31ecfd667e)
 
 - Shopping cart, search & bookmark screen
 
-
-![cartsearchbookmark](https://github.com/helkaloic/simple_products/assets/59311731/02cee186-afb7-437c-b327-ee7ca4243f57)
-
+![cartsearchbookmark](https://github.com/helkaloic/simple_products/assets/59311731/d347aba0-1eb6-4609-9a8c-bb409552b446)
 
 - Add & update product screen
 
+![addupdate](https://github.com/helkaloic/simple_products/assets/59311731/e04f3cea-9b1e-431b-82c4-9339ca2d9bc4)
 
-![addupdate](https://github.com/helkaloic/simple_products/assets/59311731/a8734075-b621-40be-8e19-28c27a957843)
+
 
 
