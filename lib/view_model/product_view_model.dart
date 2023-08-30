@@ -77,7 +77,7 @@ class ProductViewModel extends ChangeNotifier {
           .where(
             (p) =>
                 (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
-                (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
+                (p.brand ?? '').toLowerCase().contains(text.toLowerCase()) ||
                 (p.price ?? '')
                     .toString()
                     .toLowerCase()

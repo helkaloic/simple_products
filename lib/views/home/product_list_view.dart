@@ -72,16 +72,22 @@ class _ProductListViewState extends State<ProductListView> {
                 if (viewModel.carts.isNotEmpty)
                   Align(
                     alignment: Alignment.topRight,
-                    child: ClipOval(
-                      child: Container(
-                        color: Colors.redAccent,
-                        height: 30.h,
-                        width: 30.h,
-                        child: Center(
-                          child: Text(
-                            viewModel.carts.length.toString(),
-                            style: AppTheme.mediumText.copyWith(
-                              fontSize: 24.sp,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        top: 8.h,
+                        right: 12.w,
+                      ),
+                      child: ClipOval(
+                        child: Container(
+                          color: Colors.redAccent,
+                          height: 30.h,
+                          width: 30.h,
+                          child: Center(
+                            child: Text(
+                              viewModel.carts.length.toString(),
+                              style: AppTheme.mediumText.copyWith(
+                                fontSize: 24.sp,
+                              ),
                             ),
                           ),
                         ),

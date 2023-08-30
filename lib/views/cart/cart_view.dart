@@ -34,7 +34,8 @@ class _CartViewState extends State<CartView> {
           children: [
             Padding(
               padding: EdgeInsets.only(
-                bottom: viewModel.checkoutList.isNotEmpty ? 90.h : 0,
+                bottom:
+                    viewModel.checkoutList.isNotEmpty ? BOTTOM_NAV_BAR.h : 0,
               ),
               child: GridView.builder(
                 itemCount: viewModel.carts.length,
