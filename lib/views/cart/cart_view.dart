@@ -6,6 +6,7 @@ import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
+import 'package:simple_products/views/components/no_products_view.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
 class CartView extends StatefulWidget {
@@ -37,42 +38,51 @@ class _CartViewState extends State<CartView> {
                 bottom:
                     viewModel.checkoutList.isNotEmpty ? BOTTOM_NAV_BAR.h : 0,
               ),
-              child: GridView.builder(
-                itemCount: viewModel.carts.length,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: size.width / getWidthScale(size.width),
-                  mainAxisExtent: CARD_HEIGHT.h,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                ),
-                itemBuilder: (context, index) {
-                  final product = viewModel.carts[index];
-                  return GestureDetector(
-                    onTap: () => viewModel.addOrRemoveCheckoutList(product),
-                    child: Stack(
-                      children: [
-                        ProductCardView(
-                          size: size,
-                          model: product,
-                          isCartView: true,
-                          onFunction: () => viewModel.removeFromCart(product),
-                        ),
-                        if (viewModel.checkoutList.isNotEmpty)
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Checkbox(
-                              onChanged: (value) {},
-                              value: viewModel.checkoutList.contains(product),
-                              fillColor: const MaterialStatePropertyAll(
-                                AppColor.green,
+              child: viewModel.carts.isEmpty
+                  ? const NoProductView(
+                      text:
+                          "No products here!\nLet's add something to your cart.",
+                    )
+                  : GridView.builder(
+                      itemCount: viewModel.carts.length,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent:
+                            size.width / getWidthScale(size.width),
+                        mainAxisExtent: CARD_HEIGHT.h,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemBuilder: (context, index) {
+                        final product = viewModel.carts[index];
+                        return GestureDetector(
+                          onTap: () =>
+                              viewModel.addOrRemoveCheckoutList(product),
+                          child: Stack(
+                            children: [
+                              ProductCardView(
+                                size: size,
+                                model: product,
+                                isCartView: true,
+                                onFunction: () =>
+                                    viewModel.removeFromCart(product),
                               ),
-                            ),
+                              if (viewModel.checkoutList.isNotEmpty)
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Checkbox(
+                                    onChanged: (value) {},
+                                    value: viewModel.checkoutList
+                                        .contains(product),
+                                    fillColor: const MaterialStatePropertyAll(
+                                      AppColor.green,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
             if (viewModel.checkoutList.isNotEmpty)
               Align(

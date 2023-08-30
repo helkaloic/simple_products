@@ -5,6 +5,7 @@ import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
+import 'package:simple_products/views/components/no_products_view.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
 class BookmarkView extends StatefulWidget {
@@ -31,23 +32,27 @@ class _BookmarkViewState extends State<BookmarkView> {
         final bookmarks = viewModel.products!.where((e) => e.bookmark).toList();
         return Padding(
           padding: const EdgeInsets.all(SMALL_PADDING),
-          child: GridView.builder(
-            itemCount: bookmarks.length,
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: size.width / getWidthScale(size.width),
-              mainAxisExtent: 500.h,
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-            ),
-            itemBuilder: (context, index) {
-              final product = bookmarks[index];
-              return ProductCardView(
-                size: size,
-                model: product,
-                onFunction: () => viewModel.setBookmark(product),
-              );
-            },
-          ),
+          child: bookmarks.isEmpty
+              ? const NoProductView(
+                  text: "No bookmarks found",
+                )
+              : GridView.builder(
+                  itemCount: bookmarks.length,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: size.width / getWidthScale(size.width),
+                    mainAxisExtent: 500.h,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                  ),
+                  itemBuilder: (context, index) {
+                    final product = bookmarks[index];
+                    return ProductCardView(
+                      size: size,
+                      model: product,
+                      onFunction: () => viewModel.setBookmark(product),
+                    );
+                  },
+                ),
         );
       },
     );

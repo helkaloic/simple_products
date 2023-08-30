@@ -5,6 +5,7 @@ import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
 import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
+import 'package:simple_products/views/components/no_products_view.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
 class SearchView extends StatefulWidget {
@@ -29,27 +30,32 @@ class _SearchViewState extends State<SearchView> {
     return Consumer<ProductViewModel>(
       builder: (context, viewModel, child) => Padding(
         padding: const EdgeInsets.all(SMALL_PADDING),
-        child: GridView.builder(
-          itemCount: viewModel.searchProducts.length,
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: size.width / getWidthScale(size.width),
-            mainAxisExtent: 500.h,
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-          ),
-          itemBuilder: (context, index) {
-            final product = viewModel.searchProducts[index];
-            return GestureDetector(
-              onTap: () =>
-                  viewModel.navigationService.showBottomSheet(product, index),
-              child: ProductCardView(
-                size: size,
-                model: product,
-                onFunction: () => viewModel.setBookmark(product),
-              ),
-            );
-          },
-        ),
+        child: viewModel.searchController.text.isEmpty
+            ? const NoProductView(text: 'Type something to search')
+            : viewModel.searchProducts.isEmpty
+                ? const NoProductView(text: 'No products found')
+                : GridView.builder(
+                    itemCount: viewModel.searchProducts.length,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent:
+                          size.width / getWidthScale(size.width),
+                      mainAxisExtent: 500.h,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = viewModel.searchProducts[index];
+                      return GestureDetector(
+                        onTap: () => viewModel.navigationService
+                            .showBottomSheet(product, index),
+                        child: ProductCardView(
+                          size: size,
+                          model: product,
+                          onFunction: () => viewModel.setBookmark(product),
+                        ),
+                      );
+                    },
+                  ),
       ),
     );
   }
