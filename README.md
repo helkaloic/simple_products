@@ -1,16 +1,47 @@
-# simple_products
+# Simple Products App
 
-A new Flutter project.
+A simple product app using MVVM architecture, REST API and Provider.
 
-## Getting Started
+## ⭐ Getting Started
 
-This project is a starting point for a Flutter application.
+### 📖 Library
 
-A few resources to get you started if this is your first Flutter project:
+Some libraries are used in this project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- State management: [Provider](https://pub.dev/packages/provider)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- HTTP requests: [Http](https://pub.dev/packages/http)
+
+- Route manager: [GoRouter](https://pub.dev/packages/go_router)
+
+- Others: [CachedNetworkImage](https://pub.dev/packages/cached_network_image), [ScreenUtil](https://pub.dev/packages/flutter_screenutil), ...
+
+### 🔗 API
+
+API link: https://dummyjson.com/products
+
+Document: https://dummyjson.com/docs/products
+
+## ❇️ Download APK file
+
+Download APK [SimpleProducts.apk](https://github.com/helkaloic/simple_products/releases/tag/SimpleProduct-v1.0.0)
+
+## 👻 User Interface
+
+- Home & product detail screen
+
+![home](https://github.com/helkaloic/simple_products/assets/59311731/664d7453-8a24-4be6-a0a3-9242cf47da4d)
+
+
+- Shopping cart, search & bookmark screen
+
+
+![cartsearchbookmark](https://github.com/helkaloic/simple_products/assets/59311731/02cee186-afb7-437c-b327-ee7ca4243f57)
+
+
+- Add & update product screen
+
+
+![addupdate](https://github.com/helkaloic/simple_products/assets/59311731/a8734075-b621-40be-8e19-28c27a957843)
+
+
