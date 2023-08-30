@@ -87,6 +87,7 @@ class CustomBottomSheetView extends StatelessWidget {
                       style: AppTheme.mediumText.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColor.deepBlack,
+                        fontSize: 35.sp,
                       ),
                     ),
                   ),
@@ -113,6 +114,7 @@ class CustomBottomSheetView extends StatelessWidget {
                       'Delete',
                       style: AppTheme.mediumText.copyWith(
                         fontWeight: FontWeight.bold,
+                        fontSize: 35.sp,
                       ),
                     ),
                   ),
@@ -125,17 +127,19 @@ class CustomBottomSheetView extends StatelessWidget {
     );
   }
 
-  Text productDescription() {
-    return Text(
-      product.description ?? '',
-      overflow: TextOverflow.ellipsis,
-      maxLines: 6,
-      textAlign: TextAlign.justify,
-      style: AppTheme.bigTitle.copyWith(
-        color: AppColor.textGrey,
-        fontWeight: FontWeight.normal,
-        fontSize: 32.sp,
-        height: 1.75,
+  Widget productDescription() {
+    return Consumer<ProductViewModel>(
+      builder: (context, value, child) => Text(
+        product.description ?? '',
+        overflow: TextOverflow.ellipsis,
+        maxLines: 6,
+        textAlign: TextAlign.justify,
+        style: AppTheme.bigTitle.copyWith(
+          color: AppColor.textGrey,
+          fontWeight: FontWeight.normal,
+          fontSize: 32.sp,
+          height: 1.75,
+        ),
       ),
     );
   }
@@ -182,7 +186,7 @@ class CustomBottomSheetView extends StatelessWidget {
                     ? Icons.bookmark_outlined
                     : Icons.bookmark_border_outlined,
                 color: AppColor.textGrey,
-                size: 36,
+                size: (ICON_SIZE * 1.75).w,
               ),
             ),
           ),
@@ -192,74 +196,48 @@ class CustomBottomSheetView extends StatelessWidget {
   }
 
   Widget productSideInfo() {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Consumer<ProductViewModel>(
+      builder: (context, viewModel, child) => Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            sideInfoLine('Brand: ', '${product.brand}'),
+            addHeightSpace(SMALL_PADDING),
+            sideInfoLine('Discount: ', '${product.discountPercentage}%'),
+            addHeightSpace(SMALL_PADDING),
+            sideInfoLine('Stock: ', '${product.stock}'),
+            addHeightSpace(SMALL_PADDING),
+            RatingBarView(
+              rating: product.rating ?? 0.0,
+              size: 48.w,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  RichText sideInfoLine(String title, String value) {
+    return RichText(
+      text: TextSpan(
         children: [
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Brand: ',
-                  style: AppTheme.mediumText.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.textGrey,
-                  ),
-                ),
-                TextSpan(
-                  text: '${product.brand}',
-                  style: AppTheme.mediumText,
-                ),
-              ],
+          TextSpan(
+            text: title,
+            style: AppTheme.mediumText.copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppColor.textGrey,
+              fontSize: 35.sp,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
-          addHeightSpace(SMALL_PADDING),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Discount: ',
-                  style: AppTheme.mediumText.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.textGrey,
-                  ),
-                ),
-                TextSpan(
-                  text: '${product.discountPercentage}%',
-                  style: AppTheme.mediumText,
-                ),
-              ],
+          TextSpan(
+            text: value,
+            style: AppTheme.mediumText.copyWith(
+              fontSize: 35.sp,
             ),
-            overflow: TextOverflow.fade,
-          ),
-          addHeightSpace(SMALL_PADDING),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Stock: ',
-                  style: AppTheme.mediumText.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.textGrey,
-                  ),
-                ),
-                TextSpan(
-                  text: '${product.stock}',
-                  style: AppTheme.mediumText,
-                ),
-              ],
-            ),
-            overflow: TextOverflow.fade,
-          ),
-          addHeightSpace(SMALL_PADDING),
-          RatingBarView(
-            rating: product.rating ?? 0.0,
-            size: 21,
           ),
         ],
       ),
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -267,7 +245,7 @@ class CustomBottomSheetView extends StatelessWidget {
     return Expanded(
       child: Container(
         width: size.width / 2,
-        height: 150,
+        height: SLIDER_SIZE,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: AppColor.deepBlack,
@@ -280,11 +258,11 @@ class CustomBottomSheetView extends StatelessWidget {
               imageUrl: product.images![index],
               errorWidget: (context, url, error) => errorImage(),
               placeholder: (context, url) => loadingImage(),
-              height: 150,
+              height: SLIDER_SIZE,
               fit: BoxFit.cover,
             ),
             options: CarouselOptions(
-              height: 150,
+              height: SLIDER_SIZE,
               viewportFraction: 1,
               autoPlay: true,
             ),
@@ -300,16 +278,24 @@ class CustomBottomSheetView extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => viewModel.navigationService.back(),
-            child: const Align(
+            child: Align(
               alignment: Alignment.centerLeft,
-              child: Icon(Icons.close, color: AppColor.textGrey),
+              child: Icon(
+                Icons.close,
+                color: AppColor.textGrey,
+                size: ICON_SIZE.w,
+              ),
             ),
           ),
           GestureDetector(
             onTap: () => viewModel.navigateToEdit(product),
-            child: const Align(
+            child: Align(
               alignment: Alignment.centerRight,
-              child: Icon(Icons.edit, color: AppColor.textGrey),
+              child: Icon(
+                Icons.edit,
+                color: AppColor.textGrey,
+                size: ICON_SIZE.w,
+              ),
             ),
           ),
           Align(
@@ -317,7 +303,7 @@ class CustomBottomSheetView extends StatelessWidget {
             child: Text(
               'Product details',
               style: AppTheme.bigTitle.copyWith(
-                fontSize: 50.sp,
+                fontSize: TEXT_LARGE.sp,
               ),
             ),
           ),

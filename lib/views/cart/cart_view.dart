@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
+import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
@@ -31,40 +32,46 @@ class _CartViewState extends State<CartView> {
         padding: const EdgeInsets.all(SMALL_PADDING),
         child: Stack(
           children: [
-            GridView.builder(
-              itemCount: viewModel.carts.length,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: size.width / 2,
-                mainAxisExtent: 450.h,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: viewModel.checkoutList.isNotEmpty ? 90.h : 0,
               ),
-              itemBuilder: (context, index) {
-                final product = viewModel.carts[index];
-                return GestureDetector(
-                  onTap: () => viewModel.addOrRemoveCheckoutList(product),
-                  child: Stack(
-                    children: [
-                      ProductCardView(
-                        size: size,
-                        model: product,
-                        isCartView: true,
-                        onFunction: () => viewModel.removeFromCart(product),
-                      ),
-                      if (viewModel.checkoutList.isNotEmpty)
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Checkbox(
-                            onChanged: (value) {},
-                            value: viewModel.checkoutList.contains(product),
-                            fillColor:
-                                const MaterialStatePropertyAll(AppColor.green),
-                          ),
+              child: GridView.builder(
+                itemCount: viewModel.carts.length,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: size.width / getWidthScale(size.width),
+                  mainAxisExtent: CARD_HEIGHT.h,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                ),
+                itemBuilder: (context, index) {
+                  final product = viewModel.carts[index];
+                  return GestureDetector(
+                    onTap: () => viewModel.addOrRemoveCheckoutList(product),
+                    child: Stack(
+                      children: [
+                        ProductCardView(
+                          size: size,
+                          model: product,
+                          isCartView: true,
+                          onFunction: () => viewModel.removeFromCart(product),
                         ),
-                    ],
-                  ),
-                );
-              },
+                        if (viewModel.checkoutList.isNotEmpty)
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Checkbox(
+                              onChanged: (value) {},
+                              value: viewModel.checkoutList.contains(product),
+                              fillColor: const MaterialStatePropertyAll(
+                                AppColor.green,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
             if (viewModel.checkoutList.isNotEmpty)
               Align(
@@ -129,6 +136,7 @@ class _CartViewState extends State<CartView> {
                             style: AppTheme.mediumText.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColor.cardGrey,
+                              fontSize: 30.sp,
                             ),
                           ),
                         ),
@@ -145,16 +153,20 @@ class _CartViewState extends State<CartView> {
 
   AppBar topAppBar() {
     return AppBar(
+      toolbarHeight: APP_BAR.h,
       title: Text.rich(TextSpan(
         children: [
           TextSpan(
             text: 'Shopping',
-            style: AppTheme.bigTitle,
+            style: AppTheme.bigTitle.copyWith(
+              fontSize: TEXT_LARGE.sp,
+            ),
           ),
           TextSpan(
             text: 'Cart',
             style: AppTheme.bigTitle.copyWith(
               color: AppColor.textGrey,
+              fontSize: TEXT_LARGE.sp,
             ),
           ),
         ],
@@ -164,8 +176,12 @@ class _CartViewState extends State<CartView> {
       leading: GestureDetector(
         onTap: () => context.pop(),
         child: Container(
-          padding: const EdgeInsets.only(left: SMALL_PADDING),
-          child: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          padding: EdgeInsets.only(left: 40.w),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: ICON_SIZE.w,
+          ),
         ),
       ),
       actions: [
@@ -174,9 +190,10 @@ class _CartViewState extends State<CartView> {
             onTap: () => viewModel.removeAllCart(),
             child: Container(
               margin: const EdgeInsets.only(right: MEDIUM_PADDING),
-              child: const Icon(
+              child: Icon(
                 Icons.remove_shopping_cart_outlined,
                 color: Colors.white,
+                size: ICON_SIZE.w,
               ),
             ),
           ),

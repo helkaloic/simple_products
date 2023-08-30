@@ -27,3 +27,5 @@ Widget errorImage() => Container(
     );
 
 setUnfocusEditText() => FocusManager.instance.primaryFocus?.unfocus();
+
+double getWidthScale(double size) => size >= 1200 ? 3 : 2;

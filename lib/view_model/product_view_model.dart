@@ -33,11 +33,19 @@ class ProductViewModel extends ChangeNotifier {
     for (ProductModel product in checkoutList) {
       if (carts.contains(product) && products!.contains(product)) {
         carts.remove(product);
+
+        // substract the stock
+        for (ProductModel pm in products!) {
+          if (pm.id == product.id) {
+            pm.stock = pm.stock! - 1;
+            break;
+          }
+        }
       }
     }
     checkoutList.clear();
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       navigationService.back();
       navigationService.showMessage('Completed your order!');
     });
@@ -64,18 +72,22 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   searchProduct(String text) {
-    searchProducts = products!
-        .where(
-          (p) =>
-              (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
-              (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
-              (p.price ?? '')
-                  .toString()
-                  .toLowerCase()
-                  .contains(text.toLowerCase()) ||
-              (p.category ?? '').toLowerCase().contains(text.toLowerCase()),
-        )
-        .toList();
+    if (text.isNotEmpty) {
+      searchProducts = products!
+          .where(
+            (p) =>
+                (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
+                (p.title ?? '').toLowerCase().contains(text.toLowerCase()) ||
+                (p.price ?? '')
+                    .toString()
+                    .toLowerCase()
+                    .contains(text.toLowerCase()) ||
+                (p.category ?? '').toLowerCase().contains(text.toLowerCase()),
+          )
+          .toList();
+    } else {
+      searchProducts.clear();
+    }
     notifyListeners();
   }
 
@@ -130,6 +142,10 @@ class ProductViewModel extends ChangeNotifier {
       // also remove from cart
       if (carts.contains(product)) {
         carts.remove(product);
+      }
+      // also remove from checkout
+      if (checkoutList.contains(product)) {
+        checkoutList.remove(product);
       }
 
       notifyListeners();

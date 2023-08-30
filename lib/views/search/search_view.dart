@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
+import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
@@ -31,8 +32,8 @@ class _SearchViewState extends State<SearchView> {
         child: GridView.builder(
           itemCount: viewModel.searchProducts.length,
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: size.width / 2,
-            mainAxisExtent: 450.h,
+            maxCrossAxisExtent: size.width / getWidthScale(size.width),
+            mainAxisExtent: 500.h,
             crossAxisSpacing: 5,
             mainAxisSpacing: 5,
           ),
@@ -56,7 +57,7 @@ class _SearchViewState extends State<SearchView> {
   AppBar topAppBar() {
     return AppBar(
       backgroundColor: AppColor.cardGrey,
-      toolbarHeight: 70,
+      toolbarHeight: APP_BAR.h,
       flexibleSpace: SafeArea(
         child: Container(
           margin: const EdgeInsets.all(15),
@@ -67,33 +68,37 @@ class _SearchViewState extends State<SearchView> {
           child: Consumer<ProductViewModel>(
             builder: (context, viewModel, child) => TextFormField(
               controller: viewModel.searchController,
-              onChanged: (value) => viewModel.searchProduct(value),
+              onChanged: (value) => viewModel.searchProduct(value.trim()),
               style: AppTheme.mediumText.copyWith(
                 color: AppColor.textGrey.withOpacity(.85),
                 fontWeight: FontWeight.bold,
+                fontSize: 35.sp,
               ),
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 prefixIcon: Container(
-                  padding: const EdgeInsets.only(left: 15, right: 10),
-                  child: const Icon(
+                  padding: EdgeInsets.only(left: 25.w, right: 25.w),
+                  child: Icon(
                     Icons.search,
                     color: Colors.white,
+                    size: ICON_SIZE.w,
                   ),
                 ),
                 hintText: 'Search by name, brand, etc',
                 hintStyle: AppTheme.mediumText.copyWith(
                   color: AppColor.textGrey.withOpacity(.5),
                   fontWeight: FontWeight.bold,
+                  fontSize: 35.sp,
                 ),
                 border: InputBorder.none,
                 suffixIcon: GestureDetector(
                   onTap: () => viewModel.clearSearchResult(),
-                  child: const Padding(
-                    padding: EdgeInsets.only(right: 5),
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 15.w),
                     child: Icon(
                       Icons.close,
                       color: Colors.white,
+                      size: ICON_SIZE.w,
                     ),
                   ),
                 ),

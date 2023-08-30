@@ -25,7 +25,7 @@ class ProductCardView extends StatelessWidget {
     return Card(
       color: AppColor.cardLightGrey,
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
@@ -36,8 +36,9 @@ class ProductCardView extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: model.thumbnail ?? '',
               fit: BoxFit.cover,
-              width: size.width / 2,
-              height: 300.h,
+              width: size.width / getWidthScale(size.width),
+              height: size.width / getWidthScale(size.width) -
+                  (getWidthScale(size.width) + 1) * 5,
               errorWidget: (context, url, error) => errorImage(),
               placeholder: (context, url) => loadingImage(),
             ),
@@ -79,21 +80,24 @@ class ProductCardView extends StatelessWidget {
                   child: GestureDetector(
                     onTap: onFunction,
                     child: isCartView
-                        ? const Icon(
+                        ? Icon(
                             Icons.delete_outline,
                             color: AppColor.textGrey,
+                            size: ICON_SIZE.h,
                           )
                         : Icon(
                             model.bookmark
                                 ? Icons.bookmark_outlined
                                 : Icons.bookmark_border_outlined,
                             color: AppColor.textGrey,
+                            size: ICON_SIZE.h,
                           ),
                   ),
                 ),
               ],
             ),
           ),
+          addHeightSpace(SMALL_PADDING),
         ],
       ),
     );

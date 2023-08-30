@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_products/config/theme/theme.dart';
@@ -30,9 +31,12 @@ class _ProductAddViewState extends State<ProductAddView> {
 
   AppBar topAppBar() {
     return AppBar(
+      toolbarHeight: APP_BAR.h,
       title: Text(
         'Add Product',
-        style: AppTheme.bigTitle,
+        style: AppTheme.bigTitle.copyWith(
+          fontSize: TEXT_LARGE.sp,
+        ),
       ),
       backgroundColor: AppColor.cardGrey,
       centerTitle: true,
@@ -40,7 +44,11 @@ class _ProductAddViewState extends State<ProductAddView> {
         onTap: () => context.pop(),
         child: Container(
           padding: const EdgeInsets.only(left: SMALL_PADDING),
-          child: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: ICON_SIZE.w,
+          ),
         ),
       ),
     );
@@ -129,6 +137,7 @@ class _ProductAddViewState extends State<ProductAddView> {
                       'Add',
                       style: AppTheme.mediumText.copyWith(
                         color: AppColor.deepBlack,
+                        fontSize: 35.sp,
                       ),
                     ),
                   ),

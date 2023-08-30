@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
+import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
@@ -33,8 +34,8 @@ class _BookmarkViewState extends State<BookmarkView> {
           child: GridView.builder(
             itemCount: bookmarks.length,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: size.width / 2,
-              mainAxisExtent: 450.h,
+              maxCrossAxisExtent: size.width / getWidthScale(size.width),
+              mainAxisExtent: 500.h,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),
@@ -54,11 +55,14 @@ class _BookmarkViewState extends State<BookmarkView> {
 
   AppBar topAppBar() {
     return AppBar(
+      toolbarHeight: APP_BAR.h,
       title: Text.rich(TextSpan(
         children: [
           TextSpan(
             text: 'Bookmark',
-            style: AppTheme.bigTitle,
+            style: AppTheme.bigTitle.copyWith(
+              fontSize: TEXT_LARGE.sp,
+            ),
           ),
           // TextSpan(
           //   text: 'Bookmark',
@@ -76,9 +80,10 @@ class _BookmarkViewState extends State<BookmarkView> {
             onTap: () => viewModel.removeAllBookmark(),
             child: Container(
               margin: const EdgeInsets.only(right: MEDIUM_PADDING),
-              child: const Icon(
+              child: Icon(
                 Icons.bookmark_remove_outlined,
                 color: Colors.white,
+                size: ICON_SIZE.w,
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_products/config/theme/theme.dart';
@@ -43,9 +44,12 @@ class _ProductUpdateViewState extends State<ProductUpdateView> {
 
   AppBar topAppBar(ProductViewModel viewModel) {
     return AppBar(
+      toolbarHeight: APP_BAR.h,
       title: Text(
         'Update Product',
-        style: AppTheme.bigTitle,
+        style: AppTheme.bigTitle.copyWith(
+          fontSize: TEXT_LARGE.sp,
+        ),
       ),
       backgroundColor: AppColor.cardGrey,
       centerTitle: true,

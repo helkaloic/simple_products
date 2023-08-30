@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
 
@@ -31,7 +32,9 @@ class CustomTextFromField extends StatelessWidget {
         controller: controller,
         validator: (value) =>
             (value == null || value.isEmpty) ? 'Required' : null,
-        style: AppTheme.mediumText,
+        style: AppTheme.mediumText.copyWith(
+          fontSize: 35.sp,
+        ),
         maxLines: maxLines,
         keyboardType: inputType,
         decoration: InputDecoration(

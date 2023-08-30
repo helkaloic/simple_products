@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_products/config/routes/route_manager.dart';
 import 'package:simple_products/config/theme/theme.dart';
 import 'package:simple_products/utils/constants.dart';
+import 'package:simple_products/utils/utils.dart';
 import 'package:simple_products/view_model/product_view_model.dart';
 import 'package:simple_products/views/components/product_card_view.dart';
 
@@ -27,16 +28,20 @@ class _ProductListViewState extends State<ProductListView> {
 
   AppBar topAppBar() {
     return AppBar(
+      toolbarHeight: APP_BAR.h,
       title: Text.rich(TextSpan(
         children: [
           TextSpan(
             text: 'Simple',
-            style: AppTheme.bigTitle,
+            style: AppTheme.bigTitle.copyWith(
+              fontSize: TEXT_LARGE.sp,
+            ),
           ),
           TextSpan(
             text: 'Products',
             style: AppTheme.bigTitle.copyWith(
               color: AppColor.textGrey,
+              fontSize: TEXT_LARGE.sp,
             ),
           ),
         ],
@@ -47,18 +52,22 @@ class _ProductListViewState extends State<ProductListView> {
         builder: (context, viewModel, child) => GestureDetector(
           onTap: () => context.push(AppRoute.cart),
           child: Container(
-            margin: const EdgeInsets.only(
-              left: MEDIUM_PADDING,
-              top: SMALL_PADDING,
-              bottom: SMALL_PADDING,
+            // color: Colors.amber,
+            margin: EdgeInsets.only(
+              left: 20.w,
+              top: 22.h,
+              bottom: 22.h,
             ),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 Container(
                   color: Colors.transparent,
-                  child: const Icon(Icons.shopping_bag_outlined,
-                      color: Colors.white),
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                    color: Colors.white,
+                    size: 50.h,
+                  ),
                 ),
                 if (viewModel.carts.isNotEmpty)
                   Align(
@@ -66,13 +75,13 @@ class _ProductListViewState extends State<ProductListView> {
                     child: ClipOval(
                       child: Container(
                         color: Colors.redAccent,
-                        height: 18,
-                        width: 18,
+                        height: 30.h,
+                        width: 30.h,
                         child: Center(
                           child: Text(
                             viewModel.carts.length.toString(),
                             style: AppTheme.mediumText.copyWith(
-                              fontSize: 12,
+                              fontSize: 24.sp,
                             ),
                           ),
                         ),
@@ -89,7 +98,11 @@ class _ProductListViewState extends State<ProductListView> {
           onTap: () => context.push(AppRoute.addProduct),
           child: Container(
             margin: const EdgeInsets.only(right: MEDIUM_PADDING),
-            child: const Icon(Icons.add, color: Colors.white),
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: ICON_SIZE.h,
+            ),
           ),
         ),
       ],
@@ -112,8 +125,8 @@ class _ProductListViewState extends State<ProductListView> {
               : GridView.builder(
                   itemCount: viewModel.products!.length,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: size.width / 2,
-                    mainAxisExtent: 450.h,
+                    maxCrossAxisExtent: size.width / getWidthScale(size.width),
+                    mainAxisExtent: CARD_HEIGHT.h,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
                   ),
