@@ -60,7 +60,7 @@ class _SearchViewState extends State<SearchView> {
       toolbarHeight: APP_BAR.h,
       flexibleSpace: SafeArea(
         child: Container(
-          margin: const EdgeInsets.all(15),
+          margin: EdgeInsets.all(20.h),
           decoration: BoxDecoration(
             color: AppColor.cardLightGrey,
             borderRadius: BorderRadius.circular(20),
@@ -91,6 +91,7 @@ class _SearchViewState extends State<SearchView> {
                   fontSize: 35.sp,
                 ),
                 border: InputBorder.none,
+                isDense: true,
                 suffixIcon: GestureDetector(
                   onTap: () => viewModel.clearSearchResult(),
                   child: Padding(
